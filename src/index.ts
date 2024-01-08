@@ -1,29 +1,23 @@
 import figlet from 'figlet'
+import { type Page } from 'playwright'
 import { createBrowser } from './browser'
 import {
   enterWord,
+  gameFinished,
   getSyllable,
-  setUsernameAndJoin,
   waitForGameToStart,
   waitForMyTurn,
 } from './browser/game'
-import { generateConfig } from './config'
 import { logger } from './logger'
 import { WordsUtil } from './utils/words'
-try {
-  const asciiText = figlet.textSync('Bomb Party Bot', 'Big Money-ne')
-  process.stdout.write(`${asciiText}\n\n`)
-  const wordsUtil = WordsUtil.create()
-  const config = await generateConfig()
-  const page = await (await createBrowser()).newPage()
 
-  await page.goto(config.url)
-  await setUsernameAndJoin(page, config.username)
+async function gameloop(page: Page): Promise<void> {
+  const wordsUtil = WordsUtil.create()
   await waitForGameToStart(page)
 
-  while (true) {
+  while (!(await gameFinished(page))) {
     await waitForMyTurn(page)
-    process.stdout.write('🚀 Tu turno')
+    process.stdout.write('🚀 Tu turno \n')
     const syllable = await getSyllable(page)
     if (syllable == null) continue
     const word = wordsUtil.getWordFromSyllable({ syllable })
@@ -31,6 +25,19 @@ try {
     await enterWord(page, word)
     wordsUtil.updateWords({ wordUsed: word })
   }
+
+  await gameloop(page)
+}
+
+try {
+  const asciiText = figlet.textSync('Bomb Party Bot', 'Big Money-ne')
+  process.stdout.write(`${asciiText}\n\n`)
+
+  // const config = await generateConfig()
+  const page = await createBrowser()
+
+  await gameloop(page)
+  // await setUsernameAndJoin(page, config.username)
 } catch (e) {
   logger.error(e)
   process.exit(-1)
