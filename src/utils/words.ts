@@ -27,7 +27,8 @@ export class WordsUtil {
       const words = this.words.filter(
         (w) => w.length > 2 && w.toLowerCase().includes(syllable.toLowerCase()),
       )
-      return words[Math.floor(Math.random() * words.length)]
+      const [word] = words.sort((a, b) => a.length - b.length)
+      return word
     }
   }
 }
