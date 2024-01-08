@@ -1,0 +1,33 @@
+{
+  "name": "bomb-party-bot",
+  "version": "1.0.0",
+  "description": "Bot for JKLM",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec node --no-warnings --loader ts-node/esm --experimental-specifier-resolution=node --inspect ./src/index.ts",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/figlet": "^1.5.8",
+    "@types/node": "^20.10.7",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard-with-typescript": "^43.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "an-array-of-spanish-words": "^2.0.0",
+    "figlet": "^1.7.0",
+    "playwright": "^1.40.1",
+    "tslog": "^4.9.2"
+  }
+}
